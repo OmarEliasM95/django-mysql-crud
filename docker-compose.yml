@@ -3,7 +3,7 @@ version: "1.1"
 
 services:
   prueba_django:
-    # Imágen a utilizar:
+    # Imagen a utilizar:
     image: python:3.9.5
     # Nombre del container:
     container_name: prueba_djangoISDM
@@ -21,4 +21,31 @@ services:
     # Control de consola:
     stdin_open: true
     tty: true
-    
+    # Variables de entorno:
+    environment:
+      - DJANGO_DB_HOST=db
+      - DJANGO_DB_PORT=3307
+      - DJANGO_DB_NAME=prueba_django_db
+      - DJANGO_DB_USER=OmarM
+      - DJANGO_DB_PASSWORD=123456omar
+
+  db:
+    image: mysql:5.7
+    container_name: mysql_prueba_django
+    restart: always
+    environment:    
+      MYSQL_ROOT_PASSWORD: secret
+      MYSQL_DATABASE: prueba_django_db
+      MYSQL_USER: OmarM
+      MYSQL_PASSWORD: 123456omar
+    ports:
+      - "3307:3306"
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: phpmyadmin
+    restart: always
+    ports:
+      - "8080:80"
+    environment:
+      PMA_HOST: db
